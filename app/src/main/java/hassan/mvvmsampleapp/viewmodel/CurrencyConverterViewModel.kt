@@ -114,11 +114,11 @@ class CurrencyConverterViewModel @Inject constructor(
 //        // Commission can be added based on total conversion amount till now
 //        var totalConversionAmount: Double? = repository.getTotalConversionAmount(CURRENCY_EUR)
 
-        val shouldAddCommission = totalConversionCount >= NUMBER_OF_FREE_CONVERSION_LIMIT ||
-                amount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
-                (totalConversionCount > 0.0)
+        val shouldAddCommission = totalConversionCount > NUMBER_OF_FREE_CONVERSION_LIMIT ||
+                amount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT
 
-        val isTenthConversion = totalConversionCount % 10 == 0
+
+        val isTenthConversion = totalConversionCount > 0.0 && totalConversionCount % 10 == 0
 
         commissionAmount.value = if (!isTenthConversion && shouldAddCommission) {
             COMMISSION_AFTER_FREE_CONVERSION_LIMIT

@@ -52,10 +52,10 @@ class CurrencyConverterViewModelTest {
     fun isConversionFree() {
         mainCoroutineRule.dispatcher.runBlockingTest {
             Mockito.`when`(repository.getTotalConversionCount()).thenReturn(
-                6
+                4
             )
-            viewModel.applyConversionCommission(250.0)
-            assertThat((viewModel.commissionAmountLiveData.value ?: 0.0) > 0.0).isTrue()
+            viewModel.applyConversionCommission(110.0)
+            assertThat((viewModel.commissionAmountLiveData.value ?: 0.0) == 0.0).isTrue()
         }
     }
 }

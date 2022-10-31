@@ -116,9 +116,11 @@ class CurrencyConverterViewModel @Inject constructor(
 
         val shouldAddCommission = totalConversionCount >= NUMBER_OF_FREE_CONVERSION_LIMIT ||
                 amount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
-                (totalConversionCount > 0.0 && totalConversionCount % 10 == 0)
+                (totalConversionCount > 0.0)
 
-        commissionAmount.value = if (shouldAddCommission) {
+        val isTenthConversion = totalConversionCount % 10 == 0
+
+        commissionAmount.value = if (!isTenthConversion && shouldAddCommission) {
             COMMISSION_AFTER_FREE_CONVERSION_LIMIT
         } else {
             0.0

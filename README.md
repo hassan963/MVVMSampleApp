@@ -6,7 +6,7 @@
 - Retrofit and Coroutine for network call
 - MVVM desgin pattern
 - Room database for offilne caching
-- Basic unit test for room databse
+- Basic unit test for room databse, viewmodel
 - Kotlin
 
 ## Use case handled

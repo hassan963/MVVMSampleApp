@@ -79,7 +79,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
                 var newSellAmount = sellBalance.balance - sellAmount
 
-                isConversionFree()
+                applyConversionCommission(sellAmount)
                 newSellAmount -= commissionAmount.value ?: 0.0
 
                 if (receiveBalance == null) {
@@ -107,17 +107,15 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun isConversionFree() = viewModelScope.launch {
+    fun applyConversionCommission(amount: Double) = viewModelScope.launch {
         var totalConversionCount: Int? = repository.getTotalConversionCount()
         totalConversionCount = totalConversionCount ?: 0
 
-        // Commission can be added based on total conversion amount till now
-        var totalConversionAmount: Double? = repository.getTotalConversionAmount(CURRENCY_EUR)
-
-        val sellAmount = sellAmount.value ?: 0.0
+//        // Commission can be added based on total conversion amount till now
+//        var totalConversionAmount: Double? = repository.getTotalConversionAmount(CURRENCY_EUR)
 
         val shouldAddCommission = totalConversionCount >= NUMBER_OF_FREE_CONVERSION_LIMIT ||
-                sellAmount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
+                amount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
                 (totalConversionCount > 0.0 && totalConversionCount % 10 == 0)
 
         commissionAmount.value = if (shouldAddCommission) {

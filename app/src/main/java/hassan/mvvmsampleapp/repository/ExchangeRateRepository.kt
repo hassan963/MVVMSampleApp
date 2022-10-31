@@ -1,8 +1,5 @@
 package hassan.mvvmsampleapp.repository
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import hassan.mvvmsampleapp.model.*
 import hassan.mvvmsampleapp.util.NetworkResult

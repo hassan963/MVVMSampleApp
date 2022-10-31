@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CurrencySelectionViewModel@Inject constructor(private val repository: ExchangeRateRepository): ViewModel() {
+class CurrencySelectionViewModel @Inject constructor(private val repository: ExchangeRateRepository) :
+    ViewModel() {
     private val currencyRates: MutableLiveData<MutableList<Currency>> = MutableLiveData()
     val currencyRatesLiveData: LiveData<MutableList<Currency>> = currencyRates
 
@@ -59,7 +60,6 @@ class CurrencySelectionViewModel@Inject constructor(private val repository: Exch
             }
         }
     }
-
 
     fun setSellCurrency(currency: Currency) {
         selectedSellCurrency = currency

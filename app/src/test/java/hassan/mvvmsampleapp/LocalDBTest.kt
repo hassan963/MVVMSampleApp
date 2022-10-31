@@ -51,7 +51,12 @@ class LocalDBTest {
 
     @Test
     fun getSpecificCurrencyTotalConversionAmount() = runBlocking {
-        val conversion = ConversionHistory(sellCurrency = CURRENCY_EUR, receiveCurrency = CURRENCY_USD, sellAmount = 100.00, receiveAmount = 99.65)
+        val conversion = ConversionHistory(
+            sellCurrency = CURRENCY_EUR,
+            receiveCurrency = CURRENCY_USD,
+            sellAmount = 100.00,
+            receiveAmount = 99.65
+        )
         dao.saveConversionHistory(conversion)
 
         val history = dao.getTotalConversionAmount(CURRENCY_EUR)

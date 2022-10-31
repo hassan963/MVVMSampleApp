@@ -14,7 +14,8 @@ import hassan.mvvmsampleapp.ui.adapters.CurrencyListAdapter
 import hassan.mvvmsampleapp.viewmodel.CurrencySelectionViewModel
 
 @AndroidEntryPoint
-class CurrencyListDialogFragment(private val listener: CurrencySelectionListener): BottomSheetDialogFragment() {
+class CurrencyListDialogFragment(private val listener: CurrencySelectionListener) :
+    BottomSheetDialogFragment() {
     private var binding: DialogCurrencySelectionBinding? = null
     private lateinit var viewModel: CurrencySelectionViewModel
     private var isModalForSellingCurrency: Boolean = true
@@ -46,7 +47,7 @@ class CurrencyListDialogFragment(private val listener: CurrencySelectionListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let { viewModel = ViewModelProvider(it) [CurrencySelectionViewModel::class.java] }
+        activity?.let { viewModel = ViewModelProvider(it)[CurrencySelectionViewModel::class.java] }
 
         setupAdapter()
         observerLiveData()
@@ -62,9 +63,13 @@ class CurrencyListDialogFragment(private val listener: CurrencySelectionListener
     private fun observerLiveData() {
         viewModel.currencyRatesLiveData.observe(this) { list ->
             if (isModalForSellingCurrency) {
-                list.forEach { it.isSelected = it.currency == viewModel.selectedSellCurrency?.currency }
+                list.forEach {
+                    it.isSelected = it.currency == viewModel.selectedSellCurrency?.currency
+                }
             } else {
-                list.forEach { it.isSelected = it.currency == viewModel.selectedReceiveCurrency?.currency }
+                list.forEach {
+                    it.isSelected = it.currency == viewModel.selectedReceiveCurrency?.currency
+                }
             }
 
             list.sortByDescending { it.isSelected }
@@ -81,7 +86,10 @@ class CurrencyListDialogFragment(private val listener: CurrencySelectionListener
         const val TAG_NAME = "CurrencyListDialogFragment"
         const val KEY_MODAL_TYPE = "keyModalType"
 
-        fun newInstance(listener: CurrencySelectionListener, isModalForSellingCurrency: Boolean): CurrencyListDialogFragment {
+        fun newInstance(
+            listener: CurrencySelectionListener,
+            isModalForSellingCurrency: Boolean
+        ): CurrencyListDialogFragment {
             val dialog = CurrencyListDialogFragment(listener)
             val bundle = Bundle()
             bundle.putBoolean(KEY_MODAL_TYPE, isModalForSellingCurrency)

@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object AppModule {
     @Singleton
     @Provides
     fun provideHttpClient(): OkHttpClient {
-        val  okHttpClient = OkHttpClient
+        val okHttpClient = OkHttpClient
             .Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
@@ -43,8 +43,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient,
-                        gsonConverterFactory: GsonConverterFactory): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
@@ -59,5 +61,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRoomDatabase(@ApplicationContext context: Context) = ExchangeRateDatabase.invoke(context)
+    fun provideRoomDatabase(@ApplicationContext context: Context) =
+        ExchangeRateDatabase.invoke(context)
 }

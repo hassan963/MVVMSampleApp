@@ -55,42 +55,58 @@ class MainActivity : AppCompatActivity(), CurrencyListDialogFragment.CurrencySel
             balanceAdapter.setData(it)
         }
 
-        currencyConverterViewModel.currencyConversionMessageLiveData.observe(this) {
-            if (it.isNotBlank()) {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+        currencyConverterViewModel.validationErrorMessageLiveData.observe(this) {
+            if (it != -1) {
+                val errorMessage = getString(it)
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
             }
         }
 
         currencyConverterViewModel.isConversionSuccessfulLiveData.observe(this) {
             if (it) {
-                val sellAmount = currencyConverterViewModel.sellAmountLiveData.value?.let { amount ->
-                    roundOffDecimal(
-                        amount
-                    )
-                } ?: 0.0
+                val sellAmount =
+                    currencyConverterViewModel.sellAmountLiveData.value?.let { amount ->
+                        roundOffDecimal(
+                            amount
+                        )
+                    } ?: 0.0
 
-                val receiveAmount = currencyConverterViewModel.receivedAmountLiveData.value?.let { amount ->
-                    roundOffDecimal(
-                        amount
-                    )
-                } ?: 0.0
+                val receiveAmount =
+                    currencyConverterViewModel.receivedAmountLiveData.value?.let { amount ->
+                        roundOffDecimal(
+                            amount
+                        )
+                    } ?: 0.0
 
                 val sellCurrency = currencySelectionViewModel.selectedSellCurrency
                 val receiveCurrency = currencySelectionViewModel.selectedReceiveCurrency
 
-                val commission = currencyConverterViewModel.commissionAmountLiveData.value?.let { commission ->
-                    roundOffDecimal(
-                        commission
-                    )
-                } ?: 0.0
+                val commission =
+                    currencyConverterViewModel.commissionAmountLiveData.value?.let { commission ->
+                        roundOffDecimal(
+                            commission
+                        )
+                    } ?: 0.0
 
-                var message = String.format(getString(R.string.you_have_converted_successfully_msg), "$sellAmount ${sellCurrency?.currency}", "$receiveAmount ${receiveCurrency?.currency}")
+                var message = String.format(
+                    getString(R.string.you_have_converted_successfully_msg),
+                    "$sellAmount ${sellCurrency?.currency}",
+                    "$receiveAmount ${receiveCurrency?.currency}"
+                )
 
                 if (commission > 0.0) {
-                    message += String.format(getString(R.string.commission_fee_msg), "$commission ${sellCurrency?.currency}")
+                    message += String.format(
+                        getString(R.string.commission_fee_msg),
+                        "$commission ${sellCurrency?.currency}"
+                    )
                 }
 
-                showDialogFragment(MessageDialogFragment.newInstance(getString(R.string.currency_converted), message), MessageDialogFragment.TAG_NAME)
+                showDialogFragment(
+                    MessageDialogFragment.newInstance(
+                        getString(R.string.currency_converted),
+                        message
+                    ), MessageDialogFragment.TAG_NAME
+                )
 
                 currencyConverterViewModel.clearAmountDetails()
                 binding.sellCurrencyAmountEdittext.setText("")

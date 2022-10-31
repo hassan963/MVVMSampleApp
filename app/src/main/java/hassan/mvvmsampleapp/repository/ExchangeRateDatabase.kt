@@ -9,8 +9,8 @@ import hassan.mvvmsampleapp.model.ConversionHistory
 import hassan.mvvmsampleapp.model.Currency
 
 @Database(entities = [Currency::class, Balance::class, ConversionHistory::class], version = 1)
-abstract class ExchangeRateDatabase: RoomDatabase() {
-    abstract fun getDatabase() : ExchangeRateDao
+abstract class ExchangeRateDatabase : RoomDatabase() {
+    abstract fun getDatabase(): ExchangeRateDao
 
     companion object {
         private const val DB_NAME = "exchange_rate_database.db"

@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class ExchangeRateRepository @Inject constructor(private val remoteDataSource: RemoteDataSource, private val db: ExchangeRateDatabase): BaseApiResponse() {
+class ExchangeRateRepository @Inject constructor(
+    private val remoteDataSource: RemoteDataSource,
+    private val db: ExchangeRateDatabase
+) : BaseApiResponse() {
 
     suspend fun fetchCurrencies(): kotlinx.coroutines.flow.Flow<NetworkResult<CurrencyExchangeRate>> {
         return flow {

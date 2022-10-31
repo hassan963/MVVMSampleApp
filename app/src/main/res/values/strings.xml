@@ -9,4 +9,7 @@
     <string name="you_have_converted_successfully_msg">You have converted %s to %s.</string>
     <string name="commission_fee_msg"> Commission Fee - %s.</string>
     <string name="done">Done</string>
+    <string name="error_same_currency">Please select different currencies to convert!</string>
+    <string name="error_fund_not_available">Fund not available!</string>
+    <string name="error_enter_valid_amount">Please enter a valid amount!</string>
 </resources>

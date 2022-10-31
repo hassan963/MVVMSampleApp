@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import hassan.mvvmsampleapp.R
 
 @AndroidEntryPoint
-class MessageDialogFragment: DialogFragment() {
+class MessageDialogFragment : DialogFragment() {
     private var title: String = ""
     private var message: String = ""
 
@@ -30,7 +30,7 @@ class MessageDialogFragment: DialogFragment() {
         const val KEY_DIALOG_TITLE = "keyDialogTitle"
         const val KEY_DIALOG_MSG = "keyDialogMsg"
 
-        fun newInstance(title: String, message: String): DialogFragment{
+        fun newInstance(title: String, message: String): DialogFragment {
             val args = Bundle()
             args.putString(KEY_DIALOG_TITLE, title)
             args.putString(KEY_DIALOG_MSG, message)

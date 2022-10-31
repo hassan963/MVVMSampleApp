@@ -3,7 +3,8 @@ package hassan.mvvmsampleapp.ui.adapters
 import androidx.recyclerview.widget.DiffUtil
 import hassan.mvvmsampleapp.model.Balance
 
-class BalanceDiffCallback(private val oldList: List<Balance>, private val newList: List<Balance>): DiffUtil.Callback() {
+class BalanceDiffCallback(private val oldList: List<Balance>, private val newList: List<Balance>) :
+    DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
 
     override fun getNewListSize() = newList.size

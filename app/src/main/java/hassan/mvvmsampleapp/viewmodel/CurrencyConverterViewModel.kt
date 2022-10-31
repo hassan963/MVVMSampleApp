@@ -2,6 +2,7 @@ package hassan.mvvmsampleapp.viewmodel
 
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hassan.mvvmsampleapp.R
 import hassan.mvvmsampleapp.model.Balance
 import hassan.mvvmsampleapp.model.ConversionHistory
 import hassan.mvvmsampleapp.model.Currency
@@ -24,8 +25,8 @@ class CurrencyConverterViewModel @Inject constructor(
     private val receivedAmount: MutableLiveData<Double> = MutableLiveData(0.0)
     val receivedAmountLiveData: LiveData<Double> = receivedAmount
 
-    private val currencyConversionMessage: MutableLiveData<String> = MutableLiveData("")
-    val currencyConversionMessageLiveData: LiveData<String> = currencyConversionMessage
+    private val validationErrorMessage: MutableLiveData<Int> = MutableLiveData(-1)
+    val validationErrorMessageLiveData: LiveData<Int> = validationErrorMessage
 
     private val isConversionSuccessful: MutableLiveData<Boolean> = MutableLiveData(false)
     val isConversionSuccessfulLiveData: LiveData<Boolean> = isConversionSuccessful
@@ -50,7 +51,12 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    fun saveConvertedAmount(sellAmount: Double, receiveAmount: Double?, sellCurrency: Currency?, receiveCurrency: Currency?) {
+    fun saveConvertedAmount(
+        sellAmount: Double,
+        receiveAmount: Double?,
+        sellCurrency: Currency?,
+        receiveCurrency: Currency?
+    ) {
         if (validateAmount(sellAmount, sellCurrency, receiveCurrency)) {
 
             viewModelScope.launch {
@@ -60,13 +66,12 @@ class CurrencyConverterViewModel @Inject constructor(
                     receiveCurrency?.currency != sellCurrency.currency
 
                 if (!isDifferentCurrenciesSelected) {
-                    currencyConversionMessage.value =
-                        "Please select different currencies to convert!"
+                    validationErrorMessage.value = R.string.error_same_currency
                     return@launch
                 }
 
                 if (sellBalance == null || sellBalance.balance <= 0.0) {
-                    currencyConversionMessage.value = "Fund not available!"
+                    validationErrorMessage.value = R.string.error_fund_not_available
                     return@launch
                 }
 
@@ -106,11 +111,13 @@ class CurrencyConverterViewModel @Inject constructor(
         var totalConversionCount: Int? = repository.getTotalConversionCount()
         totalConversionCount = totalConversionCount ?: 0
 
+        // Commission can be added based on total conversion amount till now
         var totalConversionAmount: Double? = repository.getTotalConversionAmount(CURRENCY_EUR)
-        totalConversionAmount = totalConversionAmount ?: 0.0
+
+        val sellAmount = sellAmount.value ?: 0.0
 
         val shouldAddCommission = totalConversionCount >= NUMBER_OF_FREE_CONVERSION_LIMIT ||
-                totalConversionAmount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
+                sellAmount >= TOTAL_AMOUNT_OF_FREE_CONVERSION_FOR_EUR_LIMIT ||
                 (totalConversionCount > 0.0 && totalConversionCount % 10 == 0)
 
         commissionAmount.value = if (shouldAddCommission) {
@@ -138,7 +145,11 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun validateAmount(amount: Double, sellCurrency: Currency?, receiveCurrency: Currency?): Boolean {
+    private fun validateAmount(
+        amount: Double,
+        sellCurrency: Currency?,
+        receiveCurrency: Currency?
+    ): Boolean {
         val isCurrenciesSelected =
             receiveCurrency?.currency != null && sellCurrency?.currency != null
 
@@ -147,7 +158,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
 
         if (amount <= 0.0) {
-            currencyConversionMessage.value = "Please enter a valid amount!"
+            validationErrorMessage.value = R.string.error_enter_valid_amount
             return false
         }
         return true

@@ -10,7 +10,10 @@ import hassan.mvvmsampleapp.base.BaseRecyclerViewAdapter
 import hassan.mvvmsampleapp.databinding.ItemCurrencyOptionBinding
 import hassan.mvvmsampleapp.model.Currency
 
-class CurrencyListAdapter(listOfCurrencies: List<Currency>, private val onSelectedCurrency: (Currency) -> Unit) :
+class CurrencyListAdapter(
+    listOfCurrencies: List<Currency>,
+    private val onSelectedCurrency: (Currency) -> Unit
+) :
     BaseRecyclerViewAdapter<Currency, CurrencyListAdapter.CurrencyItemViewHolder>(listOfCurrencies.toMutableList()) {
 
     inner class CurrencyItemViewHolder(private val binding: ItemCurrencyOptionBinding) :
